@@ -9,4 +9,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	rotate_x(6)
+	rotate_x(60)
+	rotate_y(30)
+	rotate_z(30)

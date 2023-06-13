@@ -45,7 +45,6 @@ func _physics_process(delta):
 		#Collision against another Kinematic Body
 		if collision.collider is KinematicBody:
 			CollidingWith = BAVCSDictionary[self][3]
-			
 			#All stuff back
 			if !CollidingWith.has(collision.collider):
 				BAVC.CollisionChecker(self, collision.collider)
@@ -60,18 +59,26 @@ func _physics_process(delta):
 					BAVC.NonElasticCollision(self, collision.collider)
 					Velocity = BAVCSDictionary[self][1]
 			
-		BAVC.CollisionEnder(self, collision.collider)
+				BAVC.CollisionEnder(self, collision.collider)
 			#BAVC.CollisionForceCalc(self, collision.collider)
 			
-		#if collision.collider is StaticBody:
+		if collision.collider is StaticBody:
 			#Elastic collisions, again.
-		#	if IsElastic == true:
-		#		if collision.collider.collision_layer == 1:
-		#			Velocity.x = -Velocity.x
-		#		if collision.collider.collision_layer == 2:
-		#			Velocity.y = -Velocity.y
-		#		if collision.collider.collision_layer == 3:
-		#			Velocity.z = -Velocity.z
+			if IsElastic == true:
+				if collision.collider.collision_layer == 1:
+					Velocity.x = -Velocity.x
+				if collision.collider.collision_layer == 2:
+					Velocity.y = -Velocity.y
+				if collision.collider.collision_layer == 3:
+					Velocity.z = -Velocity.z
+		
+			if IsElastic == false:
+				if collision.collider.collision_layer == 1:
+					Velocity.x = 0
+				if collision.collider.collision_layer == 2:
+					Velocity.y = 0
+				if collision.collider.collision_layer == 3:
+					Velocity.z = 0
 		
 		#Forces
 		#var dist = self.get_translation()-collision.collider.get_translation()
@@ -98,12 +105,13 @@ func _physics_process(delta):
 	
 	print("V: ", Velocity)
 	print("A: ", Acceleration)
+	print("A2: ", BAVCSDictionary[self][2])
 	#Velocity += Acceleration
 	
+	
+	Velocity = BAVCSDictionary[self][1]
 	BAVC.Accelarate(self)
-	
-	
-	BAVCSDictionary[self][1] = Velocity
+	Velocity = BAVCSDictionary[self][1]
 	#nDirection = ResForce.normalized().abs()
 	#KineticEnergy = 0.5*Mass*Velocity*Velocity
 	#print("Kinetic: ", KineticEnergy, "J")

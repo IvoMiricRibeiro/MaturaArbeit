@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://TimerCube.gd" type="Script" id=1]
+[ext_resource path="res://Body.gd" type="Script" id=2]
+
+[sub_resource type="SphereMesh" id=3]
+
+[sub_resource type="ShaderMaterial" id=2]
+
+[sub_resource type="SphereShape" id=4]
+
+[node name="Sphere" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6.81012 )
+script = ExtResource( 2 )
+
+[node name="CSGMesh" type="CSGMesh" parent="."]
+mesh = SubResource( 3 )
+material = SubResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 4 )
+
+[node name="Timer" type="Timer" parent="."]
+script = ExtResource( 1 )
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

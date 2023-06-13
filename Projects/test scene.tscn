@@ -25,14 +25,11 @@ uv1_scale = Vector3( 300, 200, 0 )
 [node name="Spatial" type="Spatial"]
 
 [node name="CameraBody" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.91364, 4.04542, 8.49608 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 4, 8 )
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="CameraBody"]
 far = 200.0
-
-[node name="Creator" type="Spatial" parent="CameraBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.91364, -1.01895, -5.17493 )
 
 [node name="Suff" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 4, 2 )

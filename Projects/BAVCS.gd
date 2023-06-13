@@ -1,6 +1,6 @@
 extends Node
 
-var cube = preload("res://Cube.tscn")
+var cube = preload("res://Sphere.tscn")
 
 var cubeinstance = cube.instance()
 var cubeinstance2 = cube.instance()
@@ -27,6 +27,9 @@ func ElasticCollision(Body1, Body2):
 
 	var V1n = ((M1-M2)*V1+2*M2*V2)/(M1+M2) 
 	var V2n = ((M2-M1)*V2+2*M1*V1)/(M1+M2)
+	
+	#Check for distance and angles between vectors
+	var distance = Body1.get_translation()-Body2.get_translation()
 	
 	BodiesDictionary[Body1][1] = V1n
 	BodiesDictionary[Body2][1] = V2n
@@ -69,7 +72,8 @@ func CollisionForceCalc(Body1, Body2):
 	BodiesDictionary[Body2][5].append(F1)
 	
 func Accelarate(Body1):
-	BodiesDictionary[Body1][1] = BodiesDictionary[Body1][2]
+	BodiesDictionary[Body1][1] += BodiesDictionary[Body1][2]
+	print(BodiesDictionary[Body1][1])
 
 func _on_Button_pressed():
 	cubeinstance.translate(Vector3(-1,3,1))
@@ -80,7 +84,7 @@ func _on_Button_pressed():
 	cubeinstance2.translate(Vector3(5,3,1))
 	cubeinstance2.IsElastic = false
 	#cubeinstance2.Velocity = Vector3(-50,0,0)
-	cubeinstance2.Acceleration = (Vector3(-6,0,0)/60)
+	cubeinstance2.Acceleration = (Vector3(-1,0,0)/60)
 	add_child(cubeinstance2)
 	
 	#cubeinstance3.translate(Vector3(5,5,5))
