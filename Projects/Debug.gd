@@ -10,11 +10,11 @@ func _ready():
 
 
 func _process(delta):
-	#for i in BAVCSDictionary.values():
-		#add_text(BAVCSDictionary)
+	clear()
+	for i in BAVCSDictionary.keys():
+		add_text("Velocitiy : "+str(BAVCSDictionary[i][1]))
+		add_text("Acceleration : "+str(BAVCSDictionary[i][2]))
 		#print(BAVCSDictionary)
-	#clear()
-	pass
-
+	
 func newtext():
 	add_text("Bababooey")

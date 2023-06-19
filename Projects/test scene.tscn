@@ -101,6 +101,12 @@ __meta__ = {
 "_editor_description_": "Body And Variable Control: Stores every Kinematic Body (children), including its variables in a parent script."
 }
 
+[node name="Panel" type="Panel" parent="BAVC"]
+margin_left = 398.0
+margin_top = 3.0
+margin_right = 706.0
+margin_bottom = 190.0
+
 [node name="RichTextLabel" type="RichTextLabel" parent="BAVC"]
 margin_left = 398.0
 margin_top = 3.0

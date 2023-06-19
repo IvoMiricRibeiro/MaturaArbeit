@@ -10,16 +10,18 @@ var i = 0
 var OuterForces = [] #Exist even when there are no collisions, should theoretically be constant
 var InnerForces = [] #Basically outer forces from other objects, exist during collisions only and for calculation purposes only
 var ResForce = Vector3() #Sum of all forces exerced onto the Kinematic Body
-var CollidingWith = []
 
 var KineticEnergy = Vector3()
 
-#Variables for testing and calculations
+#Position variables for testing and calculations
 var StartPosition = Vector3()
 var EndPosition = Vector3()
 
 var IsElastic = true
 var HasElasCollided = false
+var AgainstX = false
+var AgainstY = false
+var AgainstZ = false
 var TempVelocity = Vector3()
 
 
@@ -33,34 +35,42 @@ func _ready():
 	#OuterForces.append(Mass*Vector3(0,-9.81,0))
 	
 	#"Registers" itself in the BAVCS
-	BAVCSDictionary[self] = [Mass, Velocity, Acceleration, CollidingWith, ResForce, OuterForces]
-	#print(BAVCSDictionary[self])
+	BAVCSDictionary[self] = [Mass, Velocity, Acceleration, ResForce, OuterForces]
+	StartPosition = self.get_translation()
 	
 func _physics_process(delta):
-	
+	print("X: ", AgainstX)
+	print("Y: ", AgainstY)
+	print("Y: ", AgainstZ)
 	#Velocity += Acceleration
+	
+	BAVC.Accelarate(self)
+	Velocity = BAVCSDictionary[self][1]
 	
 	for index in get_slide_count():
 		var collision = get_slide_collision(index)
 		#Collision against another Kinematic Body
 		if collision.collider is KinematicBody:
-			CollidingWith = BAVCSDictionary[self][3]
+			#CollidingWith = BAVCSDictionary[self][3]
 			#All stuff back
-			if !CollidingWith.has(collision.collider):
-				BAVC.CollisionChecker(self, collision.collider)
-				var ColIsElastic = collision.collider.IsElastic
+			var ColIsElastic = collision.collider.IsElastic
 				
-				#Code for full elastic collisions
-				if IsElastic == true and ColIsElastic == true:
-					BAVC.ElasticCollision(self,collision.collider)
-					Velocity = BAVCSDictionary[self][1]
-				#Code for full-non elastic collisions
-				if IsElastic == false and ColIsElastic == false:
-					BAVC.NonElasticCollision(self, collision.collider)
-					Velocity = BAVCSDictionary[self][1]
+			#Code for full elastic collisions
+			if IsElastic == true and ColIsElastic == true:
+				BAVC.ElasticCollision(self,collision.collider)
+				Velocity = BAVCSDictionary[self][1]
+			#Code for full-non elastic collisions
+			if IsElastic == false and ColIsElastic == false:
+				BAVC.NonElasticCollision(self, collision.collider)
+				Velocity = BAVCSDictionary[self][1]
+				if collision.collider.AgainstX == true:
+					Velocity.x = 0
+					print("Whaat")
+				if collision.collider.AgainstY == true:
+					Velocity.y = 0
+				if collision.collider.AgainstZ == true:
+					Velocity.z = 0
 			
-				BAVC.CollisionEnder(self, collision.collider)
-			#BAVC.CollisionForceCalc(self, collision.collider)
 			
 		if collision.collider is StaticBody:
 			#Elastic collisions, again.
@@ -75,18 +85,21 @@ func _physics_process(delta):
 			if IsElastic == false:
 				if collision.collider.collision_layer == 1:
 					Velocity.x = 0
+					AgainstX = true
 				if collision.collider.collision_layer == 2:
 					Velocity.y = 0
+					AgainstY = true
 				if collision.collider.collision_layer == 3:
 					Velocity.z = 0
-		
+					AgainstZ = true
+
 		#Forces
 		#var dist = self.get_translation()-collision.collider.get_translation()
 		#var newvec = collision.collider.ResForce
 	
 	#print("OuterForces: ", OuterForces)
 	
-	OuterForces = BAVCSDictionary[self][5]
+	#OuterForces = BAVCSDictionary[self][4]
 	
 	while i < OuterForces.size():
 		ResForce += OuterForces[i]
@@ -98,39 +111,17 @@ func _physics_process(delta):
 		ResForce += InnerForces[i]
 	i = 0
 	
-	#Take the force, calculate stuff, then move
-	#print("Res: ", ResForce)
-	#Acceleration = ((ResForce/Mass)/60)
-	#Acceleration = BAVCSDictionary[self][2]
-	
-	print("V: ", Velocity)
-	print("A: ", Acceleration)
-	print("A2: ", BAVCSDictionary[self][2])
-	#Velocity += Acceleration
 	
 	
-	Velocity = BAVCSDictionary[self][1]
-	BAVC.Accelarate(self)
-	Velocity = BAVCSDictionary[self][1]
-	#nDirection = ResForce.normalized().abs()
-	#KineticEnergy = 0.5*Mass*Velocity*Velocity
-	#print("Kinetic: ", KineticEnergy, "J")
-	#print("v: ", Velocity)
-	#print("d: ", Direction)
-	#print("v*d: ", Velocity*Direction)
-	move_and_slide(Velocity)
+	move_and_slide(Velocity)	
 	ResForce = Vector3()
 	
 func _on_Timer_timeout():
 	print("It just works")
 	EndPosition = self.get_translation()
+	print("Start Position: ", StartPosition)
 	print("End Position: ", EndPosition)
 	print("Distance travelled:", EndPosition-StartPosition)
-
-#func _on_Button_pressed():
-#	print("Brah")
-
-
 
 
 #func _on_Cube_KeepVelocity(KeptVelocity):

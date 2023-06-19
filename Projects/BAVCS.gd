@@ -40,26 +40,22 @@ func NonElasticCollision(Body1, Body2):
 	var V1 = BodiesDictionary[Body1][1]
 	var V2 = BodiesDictionary[Body2][1]
 	
-	print("V1: ", V1, " , V2: ", V2)
-	
-	var V = (M1*V1 + M2*V2)/(M1+M2)
-	
+	var V = (M1*V1 + M2*V2)/(M1+M2)	
 	BodiesDictionary[Body1][1] = V
 	BodiesDictionary[Body2][1] = V
-	
-	print("V: ", V)
 
+#Might not even be needed
 func CollisionChecker(Body1, Body2):
 	BodiesDictionary[Body1][3].append(Body2)
 	BodiesDictionary[Body2][3].append(Body1)
 	#print(BodiesDictionary[Body1][3])
 	#print(BodiesDictionary[Body2][3])
-	
 func CollisionEnder(Body1, Body2):
 	BodiesDictionary[Body1][3] = []
 	BodiesDictionary[Body2][3] = []
 	print("Reset")
-	
+
+
 func CollisionForceCalc(Body1, Body2):
 	var F1 = BodiesDictionary[Body1][4]
 	var F2 = BodiesDictionary[Body2][4]
@@ -73,18 +69,18 @@ func CollisionForceCalc(Body1, Body2):
 	
 func Accelarate(Body1):
 	BodiesDictionary[Body1][1] += BodiesDictionary[Body1][2]
-	print(BodiesDictionary[Body1][1])
+	#print(BodiesDictionary[Body1][1])
 
 func _on_Button_pressed():
-	cubeinstance.translate(Vector3(-1,3,1))
+	cubeinstance.translate(Vector3(-2,3,1))
 	cubeinstance.IsElastic = false
-	cubeinstance.Velocity = Vector3(1,0,0)
+	cubeinstance.Velocity = Vector3(0,0,0)
 	add_child(cubeinstance)
 	
 	cubeinstance2.translate(Vector3(5,3,1))
 	cubeinstance2.IsElastic = false
 	#cubeinstance2.Velocity = Vector3(-50,0,0)
-	cubeinstance2.Acceleration = (Vector3(-1,0,0)/60)
+	cubeinstance2.Acceleration = (Vector3(-5,0,0)/60)
 	add_child(cubeinstance2)
 	
 	#cubeinstance3.translate(Vector3(5,5,5))
