@@ -74,13 +74,13 @@ func Accelarate(Body1):
 func _on_Button_pressed():
 	cubeinstance.translate(Vector3(-2,3,1))
 	cubeinstance.IsElastic = false
-	cubeinstance.Velocity = Vector3(0,0,0)
+	cubeinstance.Velocity = Vector3(2,0,0)
 	add_child(cubeinstance)
 	
 	cubeinstance2.translate(Vector3(5,3,1))
 	cubeinstance2.IsElastic = false
 	#cubeinstance2.Velocity = Vector3(-50,0,0)
-	cubeinstance2.Acceleration = (Vector3(-5,0,0)/60)
+	cubeinstance2.Velocity = Vector3(-5,0,0)
 	add_child(cubeinstance2)
 	
 	#cubeinstance3.translate(Vector3(5,5,5))
