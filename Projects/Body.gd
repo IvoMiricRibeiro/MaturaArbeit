@@ -42,7 +42,8 @@ func _physics_process(delta):
 			var ColIsElastic = collision.collider.IsElastic
 			#Code for full elastic collisions
 			if IsElastic == true and ColIsElastic == true:
-				BAVC.ElasticCollision(self,collision.collider)
+				#BAVC.ElasticCollision(self,collision.collider)
+				BAVC.TrueElasticCollisionXY(self, collision.collider)
 			#Code for full inelastic collisions
 			if IsElastic == false and ColIsElastic == false:
 				BAVC.NonElasticCollision(self, collision.collider)
@@ -58,11 +59,11 @@ func _physics_process(delta):
 			#Elastic collisions, again.
 			if IsElastic == true:
 				if collision.collider.collision_layer == 1:
-					Velocity.x = -Velocity.x
+					BAVCSDictionary[self][1].x = -BAVCSDictionary[self][1].x
 				if collision.collider.collision_layer == 2:
-					Velocity.y = -Velocity.y
+					BAVCSDictionary[self][1].y = -BAVCSDictionary[self][1].y
 				if collision.collider.collision_layer == 3:
-					Velocity.z = -Velocity.z
+					BAVCSDictionary[self][1].z = -BAVCSDictionary[self][1].z
 			#Inelastic collisions
 			if IsElastic == false:
 				if collision.collider.collision_layer == 1:
@@ -88,7 +89,7 @@ func _physics_process(delta):
 	BAVCSDictionary[self][3] = ResForce
 	
 	KineticEnergy = 0.5*Mass*Velocity*Velocity
-	print("Kin: ", KineticEnergy, " J")
+	#print("Kin: ", KineticEnergy, " J")
 	
 	move_and_slide(Velocity)
 	InnerForce = Vector3()
