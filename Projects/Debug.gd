@@ -1,7 +1,7 @@
 extends RichTextLabel
 
 onready var BAVC = get_parent()
-onready var BAVCSDictionary = get_parent().BodiesDictionary
+onready var BAVCSDictionary = get_parent().get_parent().BodiesDictionary
 
 
 # Called when the node enters the scene tree for the first time.

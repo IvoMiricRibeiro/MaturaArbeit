@@ -1,18 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://CameraBody.gd" type="Script" id=1]
 [ext_resource path="res://BAVCS.gd" type="Script" id=2]
-[ext_resource path="res://Suff.gd" type="Script" id=3]
 [ext_resource path="res://Timer.gd" type="Script" id=4]
-[ext_resource path="res://TestSpinScript.gd" type="Script" id=5]
 [ext_resource path="res://sprite.jpg" type="Texture" id=6]
-[ext_resource path="res://Debug.gd" type="Script" id=7]
-
-[sub_resource type="CubeMesh" id=1]
-
-[sub_resource type="SpatialMaterial" id=2]
-
-[sub_resource type="BoxShape" id=3]
+[ext_resource path="res://UI.gd" type="Script" id=7]
 
 [sub_resource type="CubeMesh" id=4]
 
@@ -30,28 +22,6 @@ script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="CameraBody"]
 far = 200.0
-
-[node name="Suff" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 4, 2 )
-script = ExtResource( 3 )
-
-[node name="CSGMesh" type="CSGMesh" parent="Suff"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Suff"]
-shape = SubResource( 3 )
-
-[node name="SpinningStuff" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.85928, 3.20677, -2.03894 )
-script = ExtResource( 5 )
-
-[node name="CollisionShape" type="CollisionShape" parent="SpinningStuff"]
-
-[node name="CSGBox" type="CSGBox" parent="SpinningStuff"]
-width = 1.0
-height = 1.0
-depth = 1.0
 
 [node name="Floor" type="StaticBody" parent="."]
 transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, -1, 0 )
@@ -101,25 +71,82 @@ __meta__ = {
 "_editor_description_": "Body And Variable Control: Stores every Kinematic Body (children), including its variables in a parent script."
 }
 
-[node name="Panel" type="Panel" parent="BAVC"]
-margin_left = 398.0
-margin_top = 3.0
-margin_right = 706.0
-margin_bottom = 190.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="BAVC"]
-margin_left = 398.0
-margin_top = 3.0
-margin_right = 701.0
-margin_bottom = 191.0
-script = ExtResource( 7 )
-
-[node name="Control" type="Control" parent="BAVC"]
+[node name="UI" type="Control" parent="BAVC"]
 margin_right = 40.0
 margin_bottom = 40.0
+script = ExtResource( 7 )
+
+[node name="Panel" type="Panel" parent="BAVC/UI"]
+margin_left = 1550.0
+margin_top = 100.0
+margin_right = 1900.0
+margin_bottom = 980.0
+
+[node name="Object" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1555.0
+margin_top = 199.0
+margin_right = 1784.0
+margin_bottom = 229.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Object name:"
+
+[node name="ResForce" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1553.0
+margin_top = 248.0
+margin_right = 1782.0
+margin_bottom = 278.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Resultant force:"
+
+[node name="Acceleration" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1553.0
+margin_top = 298.0
+margin_right = 1782.0
+margin_bottom = 328.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Acceleration:"
+
+[node name="Velocity" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1552.0
+margin_top = 349.0
+margin_right = 1781.0
+margin_bottom = 379.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Velocity:"
+
+[node name="Mass" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1554.0
+margin_top = 396.0
+margin_right = 1783.0
+margin_bottom = 426.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Mass:"
+
+[node name="Elastic" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1553.0
+margin_top = 449.0
+margin_right = 1782.0
+margin_bottom = 479.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Is elastic?:"
+
+[node name="Title" type="RichTextLabel" parent="BAVC/UI"]
+margin_left = 1620.0
+margin_top = 100.0
+margin_right = 1745.0
+margin_bottom = 120.0
+rect_scale = Vector2( 2, 2 )
+text = "Object inspector"
+
+[node name="Control" type="Control" parent="BAVC"]
+margin_left = 231.0
+margin_top = 33.0
+margin_right = 271.0
+margin_bottom = 73.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="BAVC/Control"]
-margin_right = 40.0
+margin_left = 155.0
+margin_right = 195.0
 margin_bottom = 40.0
 
 [node name="Timer" type="Timer" parent="BAVC/Control"]
@@ -141,7 +168,6 @@ margin_bottom = 156.0
 text = "Create kinematic object"
 
 [connection signal="timeout" from="BAVC/Control/Timer" to="." method="_on_Timer_timeout"]
-[connection signal="timeout" from="BAVC/Control/Timer" to="Suff" method="_on_Timer_timeout"]
 [connection signal="pressed" from="BAVC/Control/Button" to="." method="_on_Button_pressed"]
 [connection signal="pressed" from="BAVC/Control/Button" to="BAVC" method="_on_Button_pressed"]
 [connection signal="pressed" from="BAVC/Control/Button" to="BAVC/Control/Timer" method="_on_Button_pressed"]

@@ -8,8 +8,13 @@ onready var camera = $Camera
 
 var mouse_sensitivity = 0.1
 
+func _ready():
+	#raycast.add_exception(self.get_parent())
+	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#raycast.translation = Vector3(newtransformx-((get_viewport().size.x)/2), -newtransformy, raycast.get_translation().z)
+	#print(raycast.get_collider())
 	direction = Vector3()
 	if Input.is_action_pressed("move_forward"):
 		direction -= transform.basis.z
