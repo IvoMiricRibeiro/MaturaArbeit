@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://CameraBody.gd" type="Script" id=1]
 [ext_resource path="res://BAVCS.gd" type="Script" id=2]
-[ext_resource path="res://Timer.gd" type="Script" id=4]
 [ext_resource path="res://sprite.jpg" type="Texture" id=6]
 [ext_resource path="res://UI.gd" type="Script" id=7]
 
@@ -72,6 +71,7 @@ __meta__ = {
 }
 
 [node name="UI" type="Control" parent="BAVC"]
+anchor_right = 0.486
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 7 )
@@ -80,7 +80,7 @@ script = ExtResource( 7 )
 margin_left = 1550.0
 margin_top = 100.0
 margin_right = 1900.0
-margin_bottom = 980.0
+margin_bottom = 500.0
 
 [node name="Object" type="RichTextLabel" parent="BAVC/UI"]
 margin_left = 1555.0
@@ -150,8 +150,6 @@ margin_right = 195.0
 margin_bottom = 40.0
 
 [node name="Timer" type="Timer" parent="BAVC/Control"]
-one_shot = true
-script = ExtResource( 4 )
 
 [node name="Button" type="Button" parent="BAVC/Control"]
 margin_left = 38.0
@@ -166,6 +164,19 @@ margin_top = 102.0
 margin_right = 223.0
 margin_bottom = 156.0
 text = "Create kinematic object"
+
+[node name="d" type="Control" parent="BAVC"]
+anchor_bottom = 30.0
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="BAVC/d"]
+margin_left = 20.0
+margin_top = 100.0
+margin_right = 370.0
+margin_bottom = 980.0
+
+[node name="Gravity" type="Node" parent="."]
 
 [connection signal="timeout" from="BAVC/Control/Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="BAVC/Control/Button" to="." method="_on_Button_pressed"]

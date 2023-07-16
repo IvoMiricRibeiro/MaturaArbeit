@@ -16,7 +16,6 @@ var EndPosition = Vector3()
 
 var IsElastic = true
 var HasElasCollided = false
-var CollidingWith = []
 var AgainstX = false
 var AgainstY = false
 var AgainstZ = false
@@ -25,6 +24,7 @@ var highlighted = false
 
 onready var BAVC = get_parent()
 onready var BAVCSDictionary = get_parent().BodiesDictionary
+onready var time
 
 func _ready():
 	#"Registers" itself in the BAVCS
@@ -39,6 +39,10 @@ func _ready():
 	#	print(BAVCSDictionary[self][2])
 	
 func _physics_process(delta):
+	time = BAVC.timestopped
+	if time == true:
+		return
+	
 	if get_node("../../Gravity"):
 		BAVCSDictionary[self][6] = (Vector3(0,-9.81,0)/60)
 	else:
@@ -76,7 +80,7 @@ func _physics_process(delta):
 					BAVCSDictionary[self][1].y = -BAVCSDictionary[self][1].y
 					BAVCSDictionary[self][2].y = -BAVCSDictionary[self][2].y
 					Velocity.y = -Velocity.y
-				if collision.collider.collision_layer == 3:
+				if collision.collider.collision_layer == 4:
 					BAVCSDictionary[self][1].z = -BAVCSDictionary[self][1].z
 					BAVCSDictionary[self][2].z = -BAVCSDictionary[self][2].z
 					Velocity.z = -Velocity.z
@@ -119,13 +123,6 @@ func _physics_process(delta):
 	ResForce = Vector3()
 	#OuterForces = []
 	
-func _on_Timer_timeout():
-	print("It just works")
-	EndPosition = self.get_translation()
-	print("Start Position: ", StartPosition)
-	print("End Position: ", EndPosition)
-	print("Distance travelled:", EndPosition-StartPosition)
-
 #func _on_Cube_KeepVelocity(KeptVelocity):
 #	print("Signal sent")
 #	Velocity = KeptVelocity
@@ -134,4 +131,7 @@ func _on_Timer_timeout():
 func _on_Sphere_input_event(camera, event, position, normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
-			get_parent().SelectedBody = self
+			BAVC.SelectedBody = self
+		if event.button_index == BUTTON_RIGHT and event.pressed == true:
+			if time == false:
+				BAVC.time_stop()
