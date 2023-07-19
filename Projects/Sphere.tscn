@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://TimerCube.gd" type="Script" id=1]
 [ext_resource path="res://Body.gd" type="Script" id=2]
 
 [sub_resource type="SphereMesh" id=3]
@@ -20,8 +19,4 @@ material = SubResource( 2 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 4 )
 
-[node name="Timer" type="Timer" parent="."]
-script = ExtResource( 1 )
-
 [connection signal="input_event" from="." to="." method="_on_Sphere_input_event"]
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

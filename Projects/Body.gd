@@ -133,5 +133,6 @@ func _on_Sphere_input_event(camera, event, position, normal, shape_idx):
 		if event.button_index == BUTTON_LEFT and event.pressed == true:
 			BAVC.SelectedBody = self
 		if event.button_index == BUTTON_RIGHT and event.pressed == true:
+			BAVC.SelectedBody = self
 			if time == false:
 				BAVC.time_stop()

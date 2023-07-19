@@ -34,6 +34,12 @@ func create():
 func time_stop():
 	timestopped = not timestopped
 
+func add_velocity(Body, AddVelocity):
+	BodiesDictionary[Body][1] += AddVelocity
+
+func add_acceleration(Body, AddAcceleration):
+	BodiesDictionary[Body][2] += AddAcceleration/60
+
 func TrueElasticCollisionXY(Body1, Body2):
 	var M1 = BodiesDictionary[Body1][0]
 	var M2 = BodiesDictionary[Body2][0]
