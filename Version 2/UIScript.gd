@@ -30,6 +30,8 @@ onready var RSl = $Radius/RSlide
 onready var RV = $Radius/RVal
 onready var RSet = $Radius/RSet
 
+onready var Warudo = $Time
+
 func _physics_process(delta):
 	Selected = get_parent().SelectedBody
 	if Selected != null:
@@ -48,6 +50,8 @@ func _physics_process(delta):
 		
 		R.text = "Current radius: "+str(Selected.scale.x)
 		RV.text = "r: "+str(RSl.value)
+		
+		Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
 		
 func _on_VSet_pressed():
 	Selected.VSet(Vector3(VxS.value, VyS.value, VzS.value))
