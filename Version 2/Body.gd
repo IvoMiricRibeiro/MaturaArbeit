@@ -16,7 +16,7 @@ var AgainstY = false
 var AgainstZ = false
 
 onready var Controler = get_parent()
-
+var collider 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -48,43 +48,40 @@ func _physics_process(delta):
 	#Time stopping code
 	if Controler.TimeStopped == false:
 		for index in get_slide_count():
-			var collider = get_slide_collision(index).collider
+			var collision = get_slide_collision(index)
 			#Code for other Kinematic Bodies
-			if collider is KinematicBody:
+			if collision.collider is KinematicBody:
 				if CollideGet() == false:
 					CollideSet(true)
-					collider.CollideSet(true)
+					collision.collider.CollideSet(true)
 					#Useful variables
 					var V1 = self.VGet()
-					var V2 = collider.VGet()
+					var V2 = collision.collider.VGet()
 					var M1 = self.MGet()
-					var M2 = collider.MGet()
+					var M2 = collision.collider.MGet()
 					#Code for elastic collisions
-					if Elastic == true and collider.Elastic == true:
-						var PD1 = self.translation-collider.translation
+					if Elastic == true and collision.collider.Elastic == true:
+						var PD1 = self.translation-collision.collider.translation
 						var PD2 = collider.translation-self.translation
 						var V1n = V1-(((2*M2)/(M1+M2))*(((Vector3(V1-V2).dot(PD1))/(PD1.length()*PD1.length()))*PD1))
 						var V2n = V2-(((2*M1)/(M1+M2))*(((Vector3(V2-V1).dot(PD2))/(PD2.length()*PD2.length()))*PD2))
 						VSet(V1n)
-						collider.VSet(V2n)
+						collision.collider.VSet(V2n)
 					#Inelastic collisions here
-					if Elastic == false and collider.Elastic == false:
+					if Elastic == false and collision.collider.Elastic == false:
 						var Vn = ((M1*V1)+(M2*V2))/(M1+M2)
 						VSet(Vn)
 						collider.VSet(Vn)
-			if collider is StaticBody:
+			if collision.collider is StaticBody:
 				if Elastic == true:
 					var V = self.VGet()
-					var A = self.AGet()
-					if collider.collision_layer == 1:
+					if collision.collider.collision_layer == 1:
 						VSet(Vector3(-V.x, V.y, V.z))
-						#ASet(Vector3(-A.x, A.y, A.z))
-					if collider.collision_layer == 2:
+					if collision.collider.collision_layer == 2:
 						VSet(Vector3(V.x, -V.y, V.z))
-						#ASet(Vector3(A.x, -A.y, A.z))
-					if collider.collision_layer == 4:
+					if collision.collider.collision_layer == 4:
 						VSet(Vector3(V.x, V.y, -V.z))
-						#ASet(Vector3(A.x, A.y, -A.z))
+				break #This needs to be here otherwise the damn for loop might reset for unknown reasons
 				#if Elastic == false:
 				#	if collider.collision_layer == 1:
 				#		pass
