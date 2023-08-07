@@ -16,10 +16,11 @@ func _process(delta):
 		
 func timechange():
 	TimeStopped = !TimeStopped
+	
 func gravitychange():
 	GravityExists = !GravityExists
 
 func create():
 	var sphereinstance = sphere.instance()
-	sphereinstance.translation = Vector3(camera.translation)
+	sphereinstance.translation = Vector3(camera.translation.x, camera.translation.y-1.5, camera.translation.z)
 	add_child(sphereinstance)
