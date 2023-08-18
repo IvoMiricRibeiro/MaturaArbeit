@@ -3,22 +3,20 @@ extends KinematicBody
 var Velocity = Vector3() setget VSet , VGet 
 var Acceleration = Vector3() setget ASet, AGet
 var Mass = 1 setget MSet, MGet
-
+var Friction = 0.2
 var Elastic = false
 
 var OuterForces = [] #List with the force of gravity and forces of other objects
 var InnerForce = Vector3() #Force calculated with the "real" acceleration
 var ResForce = Vector3() #Sum of all forces
+var NormalForce = Vector3()
+var FricForce = Vector3()
 
 var CollidedOnce = false setget CollideSet , CollideGet
 
 onready var Controler = get_parent()
 onready var CMesh = $CSGMesh
 var canaccelerate = true
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
 
 #Setters and Getter functions
 func VSet(param):
@@ -51,6 +49,21 @@ func _process(delta):
 func _physics_process(delta):
 	#Time stopping code
 	if Controler.TimeStopped == false:
+		#Acceleration, gravity, and forces
+		if canaccelerate == true:
+			VSet(VGet()+(AGet()/60)) #Problem: v not 0 when against the floor or walls
+		if Controler.GravityExists == true:
+			if canaccelerate == true:
+				VSet(VGet()+(Vector3(0, -9.81, 0)/60))
+				OuterForces.append(Vector3(0, -9.81, 0)*Mass)
+			
+		InnerForce = AGet()*Mass
+		for j in OuterForces.size():
+			ResForce += OuterForces[j]
+		
+		move_and_slide(self.VGet())
+		#$CollisionShape.scale = Vector3(1, 1, 1)
+		
 		#Collisions
 		for index in get_slide_count():
 			var body = get_slide_collision(index).collider
@@ -63,20 +76,28 @@ func _physics_process(delta):
 				var V2 = body.VGet()
 				var M1 = self.MGet()
 				var M2 = body.MGet()
+				var PD1 = self.translation-body.translation
+				var PD2 = -PD1
 				#Code for elastic collisions
 				if Elastic == true and body.Elastic == true:
-					var PD1 = self.translation-body.translation
-					var PD2 = body.translation-self.translation
 					var V1n = V1-(((2*M2)/(M1+M2))*(((Vector3(V1-V2).dot(PD1))/(PD1.length()*PD1.length()))*PD1))
 					var V2n = V2-(((2*M1)/(M1+M2))*(((Vector3(V2-V1).dot(PD2))/(PD2.length()*PD2.length()))*PD2))
 					VSet(V1n)
 					body.VSet(V2n)
 				#Inelastic collisions here
-				if Elastic == false and body.Elastic == false:
+				elif Elastic == false and body.Elastic == false:
 					var Vn = ((M1*V1)+(M2*V2))/(M1+M2)
 					VSet(Vn)
 					body.VSet(Vn)
-					#SET INNER FORCE FOR OTHER BODY?
+					#SET INNER FORCE FOR OTHER BODY?s
+					#inelastic_deform(Vn)
+					#body.inelastic_deform(Vn)
+				else:
+					var V1n = V1-(((2*M2)/(M1+M2))*(((Vector3(V1-V2).dot(PD1))/(PD1.length()*PD1.length()))*PD1))
+					var V2n = V2-(((2*M1)/(M1+M2))*(((Vector3(V2-V1).dot(PD2))/(PD2.length()*PD2.length()))*PD2))
+					VSet(0.5*V1n)
+					body.VSet(0.5*V2n)
+					
 			if body is StaticBody:
 				var V = self.VGet()
 				if Elastic == false:
@@ -86,12 +107,21 @@ func _physics_process(delta):
 						1:
 							if (d.x < 0 and V.x > 0) or (d.x > 0 and V.x < 0):
 								VSet(Vector3(0, V.y, V.z))
+								NormalForce = Vector3(AGet().x, 0, 0)*Mass
 						2:
 							if (d.y < 0 and V.y > 0) or (d.y > 0 and V.y < 0):
 								VSet(Vector3(V.x, 0, V.z))
+								NormalForce = Vector3(0, AGet().y, 0)*Mass
+								if Controler.GravityExists == true:
+									NormalForce += Vector3(0, Mass*9.81,0)
 						4:
 							if (d.z < 0 and V.z > 0) or (d.z > 0 and V.z < 0):
 								VSet(Vector3(V.x, V.y, 0))
+								NormalForce = Vector3(0, 0, AGet().z)*Mass
+
+					FricForce = (VGet().normalized()*NormalForce.length()*Friction)
+					VSet(VGet()-FricForce/(Mass*60))
+								
 				if Elastic == true:
 					match body.collision_layer:
 						1:
@@ -100,27 +130,21 @@ func _physics_process(delta):
 							VSet(Vector3(V.x, -V.y, V.z))
 						4:
 							VSet(Vector3(V.x, V.y, -V.z))
-				break #This needs to be here otherwise the damn for loop might reset for unknown reasons
-				
-		print(canaccelerate)
-		#Acceleration, gravity, and forces
-		if canaccelerate == true:
-			VSet(VGet()+(AGet()/60)) #Problem: v not 0 when against the floor or walls
-		if Controler.GravityExists == true:
-			if canaccelerate == true:
-				VSet(VGet()+(Vector3(0, -9.81, 0)/60))
-			OuterForces.append(Vector3(0, -9.81, 0)*Mass)
-			
-		InnerForce = AGet()*Mass
-		ResForce = InnerForce
-		for j in OuterForces.size():
-			ResForce += OuterForces[j]
+				#break - might needsto be here because the for loop might reset for unknown reasons
 		
-		move_and_slide(self.VGet())
-		OuterForces = []
+		ResForce += InnerForce-FricForce
+		
 		CollideSet(false)
+		OuterForces = []
+		NormalForce = Vector3()
+		#CollideSet(false)
+		canaccelerate = true
 		
 #From https://www.youtube.com/watch?v=U5qGj8qt7VU
+func inelastic_deform(speed):
+	var rad = pow(0.98, speed.length())
+	$CollisionShape.scale = Vector3(rad, rad, rad)
+	
 func _on_Sphere_input_event(camera, event, position, normal, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed == true:

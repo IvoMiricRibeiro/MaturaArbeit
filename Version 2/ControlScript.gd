@@ -6,7 +6,7 @@ var SelectedBody
 var TimeStopped = true
 var GravityExists = false
 
-func _process(delta):
+func _physics_process(delta):
 	if Input.is_action_just_pressed("letter_e"):
 		create()
 	if Input.is_action_just_pressed("letter_t"):
