@@ -20,6 +20,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="CameraBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.75, 0, 0 )
 far = 300.0
 
 [node name="Control" type="Control" parent="."]
@@ -33,13 +34,13 @@ margin_bottom = 40.0
 script = ExtResource( 3 )
 
 [node name="Panel" type="Panel" parent="Control/UI"]
-margin_right = 360.0
+margin_right = 480.0
 margin_bottom = 1080.0
 
 [node name="Title" type="RichTextLabel" parent="Control/UI"]
 margin_left = 5.0
 margin_top = 8.0
-margin_right = 176.0
+margin_right = 236.0
 margin_bottom = 41.0
 rect_scale = Vector2( 2, 2 )
 text = "Object editor and inspector"
@@ -47,15 +48,15 @@ text = "Object editor and inspector"
 [node name="Velocity" type="RichTextLabel" parent="Control/UI"]
 margin_left = 9.0
 margin_top = 83.0
-margin_right = 244.0
-margin_bottom = 210.0
+margin_right = 318.0
+margin_bottom = 200.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current velocity:"
 
 [node name="VxSlide" type="HSlider" parent="Control/UI/Velocity"]
 margin_left = 60.0
 margin_top = 15.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 49.0
 min_value = -25.0
 max_value = 25.0
@@ -64,7 +65,7 @@ step = 0.01
 [node name="VySlide" type="HSlider" parent="Control/UI/Velocity"]
 margin_left = 60.0
 margin_top = 35.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 69.0
 min_value = -25.0
 max_value = 25.0
@@ -73,7 +74,7 @@ step = 0.01
 [node name="VzSlide" type="HSlider" parent="Control/UI/Velocity"]
 margin_left = 60.0
 margin_top = 55.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 89.0
 min_value = -25.0
 max_value = 25.0
@@ -105,16 +106,16 @@ margin_bottom = 117.0
 text = "Set new velocity"
 
 [node name="VSet0" type="Button" parent="Control/UI/Velocity"]
-margin_left = 173.0
-margin_top = 88.0
-margin_right = 225.0
-margin_bottom = 118.0
+margin_left = 173.333
+margin_top = 87.3333
+margin_right = 225.333
+margin_bottom = 117.333
 text = "Set 0"
 
 [node name="Acceleration" type="RichTextLabel" parent="Control/UI"]
 margin_left = 11.0
 margin_top = 286.0
-margin_right = 246.0
+margin_right = 319.0
 margin_bottom = 413.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current acceleration:"
@@ -122,7 +123,7 @@ text = "Current acceleration:"
 [node name="AxSlide" type="HSlider" parent="Control/UI/Acceleration"]
 margin_left = 60.0
 margin_top = 15.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 49.0
 min_value = -25.0
 max_value = 25.0
@@ -131,7 +132,7 @@ step = 0.01
 [node name="AySlide" type="HSlider" parent="Control/UI/Acceleration"]
 margin_left = 60.0
 margin_top = 35.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 69.0
 min_value = -25.0
 max_value = 25.0
@@ -140,7 +141,7 @@ step = 0.01
 [node name="AzSlide" type="HSlider" parent="Control/UI/Acceleration"]
 margin_left = 60.0
 margin_top = 55.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 89.0
 min_value = -25.0
 max_value = 25.0
@@ -181,7 +182,7 @@ text = "Set 0"
 [node name="Mass" type="RichTextLabel" parent="Control/UI"]
 margin_left = 9.0
 margin_top = 479.0
-margin_right = 244.0
+margin_right = 320.0
 margin_bottom = 606.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current mass:"
@@ -189,7 +190,7 @@ text = "Current mass:"
 [node name="MSlide" type="HSlider" parent="Control/UI/Mass"]
 margin_left = 60.0
 margin_top = 15.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 49.0
 min_value = 0.01
 max_value = 40.0
@@ -209,10 +210,17 @@ margin_right = 167.0
 margin_bottom = 77.0
 text = "Set new mass"
 
+[node name="MDef" type="Button" parent="Control/UI/Mass"]
+margin_left = 172.667
+margin_top = 47.3333
+margin_right = 289.667
+margin_bottom = 77.3333
+text = "Make default"
+
 [node name="Radius" type="RichTextLabel" parent="Control/UI"]
 margin_left = 7.0
 margin_top = 611.0
-margin_right = 242.0
+margin_right = 316.0
 margin_bottom = 738.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current radius:"
@@ -220,7 +228,7 @@ text = "Current radius:"
 [node name="RSlide" type="HSlider" parent="Control/UI/Radius"]
 margin_left = 60.0
 margin_top = 15.0
-margin_right = 230.0
+margin_right = 305.0
 margin_bottom = 49.0
 min_value = 0.5
 max_value = 10.0
@@ -240,6 +248,13 @@ margin_right = 167.0
 margin_bottom = 77.0
 text = "Set new radius"
 
+[node name="RDef" type="Button" parent="Control/UI/Radius"]
+margin_left = 172.667
+margin_top = 47.3333
+margin_right = 289.667
+margin_bottom = 77.3333
+text = "Make default"
+
 [node name="Time" type="RichTextLabel" parent="Control/UI"]
 margin_left = 7.0
 margin_top = 849.0
@@ -248,10 +263,27 @@ margin_bottom = 882.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "THE WORLD!"
 
+[node name="Gravity" type="RichTextLabel" parent="Control/UI"]
+margin_left = 8.0
+margin_top = 915.0
+margin_right = 243.0
+margin_bottom = 948.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Gravity:
+"
+
+[node name="Against" type="RichTextLabel" parent="Control/UI"]
+margin_left = 6.0
+margin_top = 956.0
+margin_right = 241.0
+margin_bottom = 989.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Against Surface:"
+
 [node name="Elasticity" type="RichTextLabel" parent="Control/UI"]
 margin_left = 8.0
 margin_top = 753.0
-margin_right = 243.0
+margin_right = 309.0
 margin_bottom = 837.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Elastic:"
@@ -262,6 +294,13 @@ margin_top = 20.0
 margin_right = 164.667
 margin_bottom = 50.0
 text = "Change elasticity"
+
+[node name="EDef" type="Button" parent="Control/UI/Elasticity"]
+margin_left = 172.0
+margin_top = 20.0
+margin_right = 289.0
+margin_bottom = 50.0
+text = "Make default"
 
 [node name="Force" type="RichTextLabel" parent="Control/UI"]
 margin_left = 7.0
@@ -276,6 +315,34 @@ margin_left = 1690.0
 margin_right = 1920.0
 margin_bottom = 20.0
 text = "Qlick here to stop the simulation"
+
+[node name="Instructions" type="Button" parent="Control/UI"]
+margin_left = 867.0
+margin_right = 1054.0
+margin_bottom = 21.0
+text = "Click here to hide controls"
+
+[node name="Panel" type="Panel" parent="Control/UI/Instructions"]
+margin_left = -62.0
+margin_top = 28.0
+margin_right = 248.0
+margin_bottom = 248.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/UI/Instructions/Panel"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 230.0
+margin_bottom = 175.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Controls:
+
+WASD: Move camera
+Arrow keys: Turn camera
+E: Create object
+T: Start or resume time
+G: Add or remove gravity
+Mouse buttons: Select object (right button stops time)
+"
 
 [node name="Floor" type="StaticBody" parent="."]
 transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, -1, 0 )
@@ -346,6 +413,10 @@ shape = SubResource( 3 )
 [connection signal="pressed" from="Control/UI/Acceleration/ASet" to="Control/UI" method="_on_ASet_pressed"]
 [connection signal="pressed" from="Control/UI/Acceleration/ASet0" to="Control/UI" method="_on_ASet0_pressed"]
 [connection signal="pressed" from="Control/UI/Mass/MSet" to="Control/UI" method="_on_MSet_pressed"]
+[connection signal="pressed" from="Control/UI/Mass/MDef" to="Control/UI" method="_on_MDef_pressed"]
 [connection signal="pressed" from="Control/UI/Radius/RSet" to="Control/UI" method="_on_RSet_pressed"]
+[connection signal="pressed" from="Control/UI/Radius/RDef" to="Control/UI" method="_on_RDef_pressed"]
 [connection signal="pressed" from="Control/UI/Elasticity/ESet" to="Control/UI" method="_on_ESet_pressed"]
+[connection signal="pressed" from="Control/UI/Elasticity/EDef" to="Control/UI" method="_on_EDef_pressed"]
 [connection signal="pressed" from="Control/UI/Quit" to="Control/UI" method="_on_Quit_pressed"]
+[connection signal="pressed" from="Control/UI/Instructions" to="Control/UI" method="_on_Instructions_pressed"]

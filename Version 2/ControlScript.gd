@@ -6,6 +6,10 @@ var SelectedBody
 var TimeStopped = true
 var GravityExists = false
 
+var DefaultElas = false
+var DefaultRad = 1
+var DefaultMass = 1
+
 func _physics_process(delta):
 	if Input.is_action_just_pressed("letter_e"):
 		create()
@@ -23,4 +27,7 @@ func gravitychange():
 func create():
 	var sphereinstance = sphere.instance()
 	sphereinstance.translation = Vector3(camera.translation.x, camera.translation.y-1.5, camera.translation.z)
+	sphereinstance.Elastic = DefaultElas
+	sphereinstance.Radius = DefaultRad
+	sphereinstance.Mass = DefaultMass
 	add_child(sphereinstance)

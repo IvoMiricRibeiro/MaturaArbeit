@@ -36,30 +36,46 @@ onready var Elas = $Elasticity
 
 onready var Warudo = $Time
 
+onready var Rabbity = $Gravity
+
+onready var Instr = $Instructions
+
+#Debug
+onready var Again = $Against
+
 func _physics_process(delta):
 	Selected = get_parent().SelectedBody
+		
+	Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
+	Rabbity.text = "Gravity: "+str(get_parent().GravityExists)
+	
+	if Instr.get_child(0).visible == true:
+			Instr.text = "Click here to hide controls"
+	if Instr.get_child(0).visible == false:
+			Instr.text = "Click here to show controls"
+	
 	if Selected != null:
-		Vel.text = "Current velocity: "+str(Selected.Velocity)
+		Vel.text = "Current velocity: "+str(Selected.Velocity)+" m/s"
 		Vx.text = "v.x: "+str(VxS.value)
 		Vy.text = "v.y: "+str(VyS.value)
 		Vz.text = "v.z: "+str(VzS.value)
 		
-		Acc.text = "Current acceleration: "+str(Selected.Acceleration)
+		Acc.text = "Current acceleration: "+str(Selected.Acceleration)+ " m/s²"
 		Ax.text = "a.x: "+str(AxS.value)
 		Ay.text = "a.y: "+str(AyS.value)
 		Az.text = "a.z: "+str(AzS.value)
 		
-		F.text = "Applied resultant force: "+str(Selected.ResForce)
+		F.text = "Resultant force: "+str(Selected.ResForce)+ " N"
 		
-		M.text = "Current mass: "+str(Selected.Mass)
+		M.text = "Current mass: "+str(Selected.Mass)+ " Kg"
 		MV.text = "m: "+str(MSl.value)
 		
-		R.text = "Current radius: "+str(Selected.scale.x)
+		R.text = "Current radius: "+str(Selected.scale.x)+ " m"
 		RV.text = "r: "+str(RSl.value)
 		
 		Elas.text = "Elastic?: "+str(Selected.Elastic)
-		
-		Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
+			
+		Again.text = "Against: "+str(Selected.AgainstSurface)
 		
 func _on_VSet_pressed():
 	Selected.VSet(Vector3(VxS.value, VyS.value, VzS.value))
@@ -82,11 +98,23 @@ func _on_ASet0_pressed():
 func _on_MSet_pressed():
 	Selected.MSet(MSl.value)
 
+func _on_MDef_pressed():
+	get_parent().DefaultMass = MSl.value
+	
 func _on_RSet_pressed():
 	Selected.scale = Vector3(RSl.value, RSl.value, RSl.value)
+
+func _on_RDef_pressed():
+	get_parent().DefaultRad = RSl.value
 
 func _on_ESet_pressed():
 	Selected.Elastic = !Selected.Elastic
 
+func _on_EDef_pressed():
+	get_parent().DefaultElas = Selected.Elastic
+
 func _on_Quit_pressed():
 	get_tree().quit()
+
+func _on_Instructions_pressed():
+	Instr.get_child(0).visible = !Instr.get_child(0).visible
