@@ -15,7 +15,6 @@ var NormalForce = Vector3()
 var FricForce = Vector3()
 
 var AgainstSurface = [false, false, false] setget ASurfSet, ASurfGet
-
 var CollidedOnce = false setget CollideSet , CollideGet
 
 onready var Controler = get_parent()
@@ -83,9 +82,10 @@ func _physics_process(delta):
 		for index in get_slide_count():
 			var body = get_slide_collision(index).collider
 			#Code for other Kinematic Bodies
-			if body is KinematicBody and CollideGet() == false:
-				CollideSet(true)
-				body.CollideSet(true)
+			if body is KinematicBody:# and CollideGet() == false:
+				#CollidingWith.append(body)
+				#CollideSet(true)
+				#body.CollideSet(true)
 				#Useful variables
 				var V1 = self.VGet()
 				var V2 = body.VGet()
