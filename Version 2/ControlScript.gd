@@ -8,6 +8,7 @@ var GravityExists = false
 
 var DefaultElas = false
 var DefaultRad = 1
+var DefaultFric = 0.2
 var DefaultMass = 1
 
 func _physics_process(delta):
@@ -26,8 +27,9 @@ func gravitychange():
 
 func create():
 	var sphereinstance = sphere.instance()
-	sphereinstance.translation = Vector3(camera.translation.x, camera.translation.y-1.5, camera.translation.z)
+	sphereinstance.translation = Vector3(camera.translation.x, camera.translation.y, camera.translation.z)+(-camera.global_transform.basis.z*2)
 	sphereinstance.Elastic = DefaultElas
 	sphereinstance.Radius = DefaultRad
 	sphereinstance.Mass = DefaultMass
+	sphereinstance.Friction = DefaultFric
 	add_child(sphereinstance)

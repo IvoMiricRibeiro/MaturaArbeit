@@ -32,22 +32,28 @@ onready var RSl = $Radius/RSlide
 onready var RV = $Radius/RVal
 onready var RSet = $Radius/RSet
 
+onready var Fr = $Friction
+onready var FrSl = $Friction/FSlide
+onready var FrV = $Friction/FVal
+onready var FrSet = $Friction/FSet
+
 onready var Elas = $Elasticity
 
 onready var Warudo = $Time
-
+onready var Clock = $Clock
 onready var Rabbity = $Gravity
+onready var Arrow = $Arrow
 
 onready var Instr = $Instructions
-
-#Debug
-onready var Again = $Against
 
 func _physics_process(delta):
 	Selected = get_parent().SelectedBody
 		
 	Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
 	Rabbity.text = "Gravity: "+str(get_parent().GravityExists)
+	Clock.visible = !get_parent().TimeStopped
+	Arrow.visible = get_parent().GravityExists
+	
 	
 	if Instr.get_child(0).visible == true:
 			Instr.text = "Click here to hide controls"
@@ -73,48 +79,67 @@ func _physics_process(delta):
 		R.text = "Current radius: "+str(Selected.scale.x)+ " m"
 		RV.text = "r: "+str(RSl.value)
 		
+		Fr.text = "Current coefficient of friction: "+str(Selected.Friction)
+		FrV.text = "fr: "+str(FrSl.value)
+		
 		Elas.text = "Elastic?: "+str(Selected.Elastic)
 			
-		Again.text = "Against: "+str(Selected.AgainstSurface)
-		
+
 func _on_VSet_pressed():
-	Selected.VSet(Vector3(VxS.value, VyS.value, VzS.value))
+	if Selected != null:
+		Selected.VSet(Vector3(VxS.value, VyS.value, VzS.value))
 
 func _on_VSet0_pressed():
-	Selected.VSet(Vector3())
-	VxS.value = 0
-	VyS.value = 0
-	VzS.value = 0
+	if Selected != null:
+		Selected.VSet(Vector3())
+		VxS.value = 0
+		VyS.value = 0
+		VzS.value = 0
 
 func _on_ASet_pressed():
-	Selected.ASet(Vector3(AxS.value, AyS.value, AzS.value))
+	if Selected != null:
+		Selected.ASet(Vector3(AxS.value, AyS.value, AzS.value))
 
 func _on_ASet0_pressed():
-	Selected.ASet(Vector3())
-	AxS.value = 0
-	AyS.value = 0
-	AzS.value = 0
+	if Selected != null:
+		Selected.ASet(Vector3())
+		AxS.value = 0
+		AyS.value = 0
+		AzS.value = 0
 
 func _on_MSet_pressed():
-	Selected.MSet(MSl.value)
+	if Selected != null:
+		Selected.MSet(MSl.value)
 
 func _on_MDef_pressed():
 	get_parent().DefaultMass = MSl.value
 	
 func _on_RSet_pressed():
-	Selected.scale = Vector3(RSl.value, RSl.value, RSl.value)
+	if Selected != null:
+		Selected.scale = Vector3(RSl.value, RSl.value, RSl.value)
 
 func _on_RDef_pressed():
 	get_parent().DefaultRad = RSl.value
 
+func _on_FSet_pressed():
+	if Selected != null:
+		Selected.Friction = FrSl.value
+	
+func _on_FDef_pressed():
+	get_parent().DefaultFric = FrSl.value
+
 func _on_ESet_pressed():
-	Selected.Elastic = !Selected.Elastic
+	if Selected != null:
+		Selected.Elastic = !Selected.Elastic
 
 func _on_EDef_pressed():
-	get_parent().DefaultElas = Selected.Elastic
+	if Selected != null:
+		get_parent().DefaultElas = Selected.Elastic
 
 func _on_Quit_pressed():
 	get_tree().quit()
 
 func _on_Instructions_pressed():
 	Instr.get_child(0).visible = !Instr.get_child(0).visible
+
+
