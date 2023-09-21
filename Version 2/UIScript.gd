@@ -39,20 +39,20 @@ onready var FrSet = $Friction/FSet
 
 onready var Elas = $Elasticity
 
-onready var Warudo = $Time
-onready var Clock = $Clock
-onready var Rabbity = $Gravity
-onready var Arrow = $Arrow
+#onready var Warudo = $Time
+#onready var Clock = $Clock
+#onready var Rabbity = $Gravity
+#onready var Arrow = $Arrow
 
 onready var Instr = $Instructions
 
 func _physics_process(delta):
 	Selected = get_parent().SelectedBody
 		
-	Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
-	Rabbity.text = "Gravity: "+str(get_parent().GravityExists)
-	Clock.visible = !get_parent().TimeStopped
-	Arrow.visible = get_parent().GravityExists
+	#Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
+	#Rabbity.text = "Gravity: "+str(get_parent().GravityExists)
+	#Clock.visible = !get_parent().TimeStopped
+	#Arrow.visible = get_parent().GravityExists
 	
 	
 	if Instr.get_child(0).visible == true:
@@ -141,5 +141,3 @@ func _on_Quit_pressed():
 
 func _on_Instructions_pressed():
 	Instr.get_child(0).visible = !Instr.get_child(0).visible
-
-

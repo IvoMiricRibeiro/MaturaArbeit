@@ -122,6 +122,7 @@ func _physics_process(delta):
 		NormalForce = Vector3()
 		CanAccelerate = true
 		
+		
 #From https://www.youtube.com/watch?v=U5qGj8qt7VU
 func _on_Sphere_input_event(camera, event, position, normal, shape_idx):
 	if event is InputEventMouseButton:

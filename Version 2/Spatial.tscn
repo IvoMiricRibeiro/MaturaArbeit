@@ -1,19 +1,17 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://CameraScript.gd" type="Script" id=1]
 [ext_resource path="res://ControlScript.gd" type="Script" id=2]
-[ext_resource path="res://UIScript.gd" type="Script" id=3]
-[ext_resource path="res://sprite.jpg" type="Texture" id=4]
-[ext_resource path="res://clock.png" type="Texture" id=5]
-[ext_resource path="res://arrow.png" type="Texture" id=6]
+[ext_resource path="res://sprite.jpg" type="Texture" id=3]
+[ext_resource path="res://UIScript.gd" type="Script" id=4]
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="CubeMesh" id=2]
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_texture = ExtResource( 4 )
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 3 )
 uv1_scale = Vector3( 300, 200, 1 )
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=1]
 
 [node name="Spatial" type="Spatial"]
 
@@ -32,7 +30,7 @@ script = ExtResource( 2 )
 [node name="UI" type="Control" parent="Control"]
 margin_right = 40.0
 margin_bottom = 40.0
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="Panel" type="Panel" parent="Control/UI"]
 margin_right = 480.0
@@ -44,7 +42,8 @@ margin_top = 8.0
 margin_right = 236.0
 margin_bottom = 41.0
 rect_scale = Vector2( 2, 2 )
-text = "Object editor and inspector"
+text = "Object editor and inspector
+"
 
 [node name="Velocity" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
@@ -95,7 +94,7 @@ text = "v.y:"
 
 [node name="Vz" type="RichTextLabel" parent="Control/UI/Velocity"]
 margin_top = 63.0
-margin_right = 67.0
+margin_right = 65.0
 margin_bottom = 79.0
 text = "v.z:"
 
@@ -107,16 +106,16 @@ margin_bottom = 117.0
 text = "Set new velocity"
 
 [node name="VSet0" type="Button" parent="Control/UI/Velocity"]
-margin_left = 173.333
-margin_top = 87.3333
-margin_right = 225.333
-margin_bottom = 117.333
+margin_left = 173.0
+margin_top = 87.0
+margin_right = 225.0
+margin_bottom = 117.0
 text = "Set 0"
 
 [node name="Acceleration" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
 margin_top = 240.0
-margin_right = 318.0
+margin_right = 317.0
 margin_bottom = 368.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current acceleration:"
@@ -162,7 +161,7 @@ text = "a.y:"
 
 [node name="Az" type="RichTextLabel" parent="Control/UI/Acceleration"]
 margin_top = 63.0
-margin_right = 67.0
+margin_right = 65.0
 margin_bottom = 79.0
 text = "a.z:"
 
@@ -175,16 +174,16 @@ text = "Set new acceleration"
 
 [node name="ASet0" type="Button" parent="Control/UI/Acceleration"]
 margin_left = 173.0
-margin_top = 88.0
+margin_top = 87.0
 margin_right = 225.0
-margin_bottom = 118.0
+margin_bottom = 117.0
 text = "Set 0"
 
 [node name="Mass" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
 margin_top = 430.0
 margin_right = 320.0
-margin_bottom = 606.0
+margin_bottom = 520.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current mass:"
 
@@ -212,17 +211,17 @@ margin_bottom = 77.0
 text = "Set new mass"
 
 [node name="MDef" type="Button" parent="Control/UI/Mass"]
-margin_left = 172.667
-margin_top = 47.3333
-margin_right = 289.667
-margin_bottom = 77.3333
+margin_left = 172.0
+margin_top = 47.0
+margin_right = 289.0
+margin_bottom = 77.0
 text = "Make default"
 
 [node name="Radius" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
 margin_top = 560.0
-margin_right = 318.0
-margin_bottom = 644.0
+margin_right = 320.0
+margin_bottom = 650.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current radius:"
 
@@ -250,17 +249,17 @@ margin_bottom = 77.0
 text = "Set new radius"
 
 [node name="RDef" type="Button" parent="Control/UI/Radius"]
-margin_left = 172.667
-margin_top = 47.3333
-margin_right = 289.667
-margin_bottom = 77.3333
+margin_left = 172.0
+margin_top = 47.0
+margin_right = 289.0
+margin_bottom = 77.0
 text = "Make default"
 
 [node name="Friction" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
 margin_top = 690.0
-margin_right = 319.0
-margin_bottom = 817.0
+margin_right = 320.0
+margin_bottom = 780.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Current coefficient of friction:"
 
@@ -271,7 +270,7 @@ margin_right = 305.0
 margin_bottom = 49.0
 max_value = 4.0
 step = 0.01
-value = 0.5
+value = 0.01
 
 [node name="FVal" type="RichTextLabel" parent="Control/UI/Friction"]
 margin_top = 23.0
@@ -287,43 +286,24 @@ margin_bottom = 77.0
 text = "Set new friction"
 
 [node name="FDef" type="Button" parent="Control/UI/Friction"]
-margin_left = 172.667
-margin_top = 47.3333
-margin_right = 289.667
-margin_bottom = 77.3333
+margin_left = 172.0
+margin_top = 47.0
+margin_right = 289.0
+margin_bottom = 77.0
 text = "Make default"
-
-[node name="Time" type="RichTextLabel" parent="Control/UI"]
-visible = false
-margin_left = 9.0
-margin_top = 1045.0
-margin_right = 244.0
-margin_bottom = 1078.0
-rect_scale = Vector2( 1.5, 1.5 )
-text = "THE WORLD!"
-
-[node name="Gravity" type="RichTextLabel" parent="Control/UI"]
-visible = false
-margin_left = 10.0
-margin_top = 1011.0
-margin_right = 245.0
-margin_bottom = 1044.0
-rect_scale = Vector2( 1.5, 1.5 )
-text = "Gravity:
-"
 
 [node name="Elasticity" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
 margin_top = 820.0
-margin_right = 311.0
-margin_bottom = 904.0
+margin_right = 310.0
+margin_bottom = 900.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Elastic:"
 
 [node name="ESet" type="Button" parent="Control/UI/Elasticity"]
-margin_left = 14.6667
+margin_left = 17.0
 margin_top = 20.0
-margin_right = 164.667
+margin_right = 167.0
 margin_bottom = 50.0
 text = "Change elasticity"
 
@@ -334,14 +314,6 @@ margin_right = 289.0
 margin_bottom = 50.0
 text = "Make default"
 
-[node name="Force" type="RichTextLabel" parent="Control/UI"]
-margin_left = 10.0
-margin_top = 910.0
-margin_right = 244.0
-margin_bottom = 944.0
-rect_scale = Vector2( 1.5, 1.5 )
-text = "Force:"
-
 [node name="Quit" type="Button" parent="Control/UI"]
 margin_left = 1690.0
 margin_right = 1920.0
@@ -351,7 +323,7 @@ text = "Qlick here to stop the simulation"
 [node name="Instructions" type="Button" parent="Control/UI"]
 margin_left = 867.0
 margin_right = 1054.0
-margin_bottom = 21.0
+margin_bottom = 20.0
 text = "Click here to hide controls"
 
 [node name="Panel" type="Panel" parent="Control/UI/Instructions"]
@@ -380,79 +352,77 @@ G: Add or remove gravity
 Mouse buttons: Select object (right button stops time)
 "
 
-[node name="Clock" type="Sprite" parent="Control/UI"]
-position = Vector2( 559, 84 )
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 5 )
-
-[node name="Arrow" type="Sprite" parent="Control/UI"]
-position = Vector2( 706, 85 )
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
+[node name="Force" type="RichTextLabel" parent="Control/UI"]
+margin_left = 10.0
+margin_top = 910.0
+margin_right = 240.0
+margin_bottom = 944.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Force:"
 
 [node name="Floor" type="StaticBody" parent="."]
-transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, -1, 0 )
+transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 0, 0 )
 collision_layer = 2
 
-[node name="CSGMesh" type="CSGMesh" parent="Floor"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
+[node name="MeshInstance" type="MeshInstance" parent="Floor"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Floor"]
-shape = SubResource( 3 )
-
-[node name="Wall1" type="StaticBody" parent="."]
-transform = Transform( -4.37114e-06, -1, 0, 1.19249e-06, -5.21253e-16, 100, -100, 4.37114e-08, 1.19249e-06, 101, 100, 0 )
-
-[node name="CSGMesh" type="CSGMesh" parent="Wall1"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Wall1"]
-shape = SubResource( 3 )
-
-[node name="Wall2" type="StaticBody" parent="."]
-transform = Transform( -4.37114e-06, -1, 0, 1.19249e-06, -5.21253e-16, 100, -100, 4.37114e-08, 1.19249e-06, -101, 100, 0 )
-
-[node name="CSGMesh" type="CSGMesh" parent="Wall2"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Wall2"]
-shape = SubResource( 3 )
-
-[node name="Wall3" type="StaticBody" parent="."]
-transform = Transform( 100, 0, 0, 0, -4.37114e-08, 100, 0, -1, -4.37114e-06, 0, 100, 101 )
-collision_layer = 4
-
-[node name="CSGMesh" type="CSGMesh" parent="Wall3"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Wall3"]
-shape = SubResource( 3 )
-
-[node name="Wall4" type="StaticBody" parent="."]
-transform = Transform( 100, 0, 0, 0, -4.37114e-08, 100, 0, -1, -4.37114e-06, 0, 100, -101 )
-collision_layer = 4
-
-[node name="CSGMesh" type="CSGMesh" parent="Wall4"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
-
-[node name="CollisionShape" type="CollisionShape" parent="Wall4"]
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="Ceiling" type="StaticBody" parent="."]
 transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 100, 0, 201, 0 )
 collision_layer = 2
 
-[node name="CSGMesh" type="CSGMesh" parent="Ceiling"]
-mesh = SubResource( 1 )
-material = SubResource( 2 )
+[node name="MeshInstance" type="MeshInstance" parent="Ceiling"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Ceiling"]
-shape = SubResource( 3 )
+shape = SubResource( 1 )
+
+[node name="Wall1" type="StaticBody" parent="."]
+transform = Transform( 0, -1, 0, 0, 0, 100, -100, 0, 0, 101, 100, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall1"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall1"]
+shape = SubResource( 1 )
+
+[node name="Wall2" type="StaticBody" parent="."]
+transform = Transform( 0, -1, 0, 0, 0, 100, -100, 0, 0, -101, 100, 0 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall2"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall2"]
+shape = SubResource( 1 )
+
+[node name="Wall3" type="StaticBody" parent="."]
+transform = Transform( 100, 0, 0, 0, 0, 100, 0, -1, 0, 0, 100, 101 )
+collision_layer = 5
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall3"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall3"]
+shape = SubResource( 1 )
+
+[node name="Wall4" type="StaticBody" parent="."]
+transform = Transform( 100, 0, 0, 0, 0, 100, 0, -1, 0, 0, 100, -101 )
+collision_layer = 4
+
+[node name="MeshInstance" type="MeshInstance" parent="Wall4"]
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Wall4"]
+shape = SubResource( 1 )
 
 [connection signal="pressed" from="Control/UI/Velocity/VSet" to="Control/UI" method="_on_VSet_pressed"]
 [connection signal="pressed" from="Control/UI/Velocity/VSet0" to="Control/UI" method="_on_VSet0_pressed"]
