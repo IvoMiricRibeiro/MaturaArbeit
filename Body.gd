@@ -14,6 +14,7 @@ var FricForce = Vector3()
 var ResForce = Vector3() #Sum of all forces
 
 var AgainstSurface = [false, false, false] setget ASurfSet
+var ElasColHappened = [false, false, false]
 var CanAccelerate = true
 
 onready var Controler = get_parent()
@@ -54,7 +55,7 @@ func _physics_process(delta):
 		move_and_slide(Velocity)
 		
 		AgainstSurface = [false, false, false]
-		var ElasColHappened = [false, false, false]
+		ElasColHappened = [false, false, false]
 		#Collisions
 		for index in get_slide_count():
 			var body = get_slide_collision(index).collider
