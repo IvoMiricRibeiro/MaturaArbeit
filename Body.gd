@@ -88,22 +88,23 @@ func _physics_process(delta):
 				body.VSet(V2n)
 				
 			if body is StaticBody:
-				var side = 0
+				var axis = 0
 				var dis = self.translation-body.translation
 				CanAccelerate = false
-				while side < 3:
-					if body.get_collision_layer_bit(side) == true:
-						if Elastic == false:
-							Velocity[side] = 0
-							AgainstSurface[side] = true
-							NormalForce[side] = Acceleration[side]
-							if side == 1 and Controler.GravityExists == true:
-								NormalForce += Vector3(0,9.81,0)
+				while axis < 3:
+					if body.get_collision_layer_bit(axis) == true:
 						if Elastic == true:
-							if ElasColHappened[side] == false:
-								ElasColHappened[side] = true
-								Velocity[side] = -Velocity[side]
-					side += 1
+							if ElasColHappened[axis] == false:
+								ElasColHappened[axis] = true
+								Velocity[axis] = -Velocity[axis]
+						if Elastic == false:
+							Velocity[axis] = 0
+							AgainstSurface[axis] = true
+							NormalForce[axis] = Acceleration[axis]
+							if axis == 1 and Controler.GravityExists == true:
+								NormalForce += Vector3(0,9.81,0)
+						
+					axis += 1
 				NormalForce = NormalForce*Mass
 				FricForce = (Velocity.normalized()*NormalForce.length()*Friction)
 				
@@ -112,9 +113,10 @@ func _physics_process(delta):
 					VSet(Vector3())
 				else:
 					VSet(Velocity-(FricForce/(Mass*60)))
-		for side in AgainstSurface.size():
-			if AgainstSurface[side] == true:
-				Velocity[side] = 0
+					
+		for axis in AgainstSurface.size():
+			if AgainstSurface[axis] == true:
+				Velocity[axis] = 0
 		
 		NormalForce = Vector3()
 		FricForce = Vector3()
@@ -124,9 +126,9 @@ func _physics_process(delta):
 #From https://www.youtube.com/watch?v=U5qGj8qt7VU
 func _on_Sphere_input_event(camera, event, position, normal, shape_idx):
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed == true:
+		if event.button_index == BUTTON_LEFT:
 			Controler.SelectedBody = self
-		if event.button_index == BUTTON_RIGHT and event.pressed == true:
+		if event.button_index == BUTTON_RIGHT:
 			if Controler.TimeStopped == false:
 				Controler.TimeStopped = true
 			Controler.SelectedBody = self
