@@ -3,7 +3,7 @@ extends KinematicBody
 var Velocity = Vector3() setget VSet
 var Acceleration = Vector3() setget ASet
 
-var Mass = 1 setget MSet
+var Mass = 1.0 setget MSet
 var Elastic = false
 var Friction = 0.2
 var Radius = 1
@@ -16,9 +16,12 @@ var ResForce = Vector3() #Sum of all forces
 var AgainstSurface = [false, false, false] setget ASurfSet
 var ElasColHappened = [false, false, false]
 var CanAccelerate = true
+var HasCollided = false setget HasColSet
 
 onready var Controler = get_parent()
 onready var CMesh = $CSGMesh
+
+var COR = 1.0
 
 #Setters functions for other bodies
 func VSet(param):
@@ -29,6 +32,8 @@ func MSet(param):
 	Mass = param
 func ASurfSet(param):
 	AgainstSurface = param
+func HasColSet(param):
+	HasCollided = param
 
 func _ready():
 	scale = Vector3(Radius, Radius, Radius)
@@ -60,50 +65,44 @@ func _physics_process(delta):
 		for index in get_slide_count():
 			var body = get_slide_collision(index).collider
 			if body is KinematicBody:
-				#Useful variables
-				var V1 = Velocity
-				var V2 = body.Velocity
-				var V1n
-				var V2n
-				var M1 = Mass
-				var M2 = body.Mass
-				var PD1 = translation-body.translation
-				#Code for inelastic collisions
-				if not Elastic and not body.Elastic:
-					V1n = ((M1*V1)+(M2*V2))/(M1+M2)
-					V2n = V1n
-					if AgainstSurface != body.AgainstSurface:
-						if AgainstSurface > body.AgainstSurface:
-							body.ASurfSet(AgainstSurface)
-						else:
-							ASurfSet(body.AgainstSurface)
-				# Elsatic and "half elastic" collisions
-				else:
-					V1n = V1-(((2*M2)/(M1+M2))*(((Vector3(V1-V2).dot(PD1))/(PD1.length()*PD1.length()))*PD1))
-					V2n = (V1*M1+V2*M2-M1*V1n)/M2
-					if (Elastic and not body.Elastic) or (not Elastic and body.Elastic):
-						V1n = V1n/2
-						V2n = V2n/2
-				VSet(V1n)
-				body.VSet(V2n)
+				if body.HasCollided == false:
+					HasColSet(true)
+					body.HasColSet(true)
+					
+					#Useful variables
+					var V1 = Velocity
+					var V2 = body.Velocity
+					var M1 = Mass
+					var M2 = body.Mass
+					var PD1 = translation-body.translation
+					var CorN = (COR+body.COR)/2
+					
+					var dV1n = (((1+CorN)*M2)/(M1+M2))*(PD1.normalized()*(V2-V1))*PD1.normalized()
+					VSet(V1+dV1n)
+					body.VSet(V2-dV1n)
+				
+				if body.HasCollided == true:
+					body.HasColSet(false)
+				HasColSet(false)
 				
 			if body is StaticBody:
+				var Vn = Velocity[0]
 				var axis = 0
 				var dis = self.translation-body.translation
 				CanAccelerate = false
 				while axis < 3:
 					if body.get_collision_layer_bit(axis) == true:
-						if Elastic == true:
-							if ElasColHappened[axis] == false:
-								ElasColHappened[axis] = true
-								Velocity[axis] = -Velocity[axis]
-						if Elastic == false:
-							Velocity[axis] = 0
+						if ElasColHappened[axis] == false:
+							ElasColHappened[axis] = true
+							Vn = -Velocity[axis]*COR
+						if sqrt(Vn*Vn) < 0.2:
+							Vn = 0
+						Velocity[axis] = Vn
+						if Vn == 0:
 							AgainstSurface[axis] = true
 							NormalForce[axis] = Acceleration[axis]
 							if axis == 1 and Controler.GravityExists == true:
 								NormalForce += Vector3(0,9.81,0)
-						
 					axis += 1
 				NormalForce = NormalForce*Mass
 				FricForce = (Velocity.normalized()*NormalForce.length()*Friction)
@@ -113,7 +112,8 @@ func _physics_process(delta):
 					VSet(Vector3())
 				else:
 					VSet(Velocity-(FricForce/(Mass*60)))
-					
+
+				
 		for axis in AgainstSurface.size():
 			if AgainstSurface[axis] == true:
 				Velocity[axis] = 0
@@ -121,7 +121,6 @@ func _physics_process(delta):
 		NormalForce = Vector3()
 		FricForce = Vector3()
 		CanAccelerate = true
-		
 		
 #From https://www.youtube.com/watch?v=U5qGj8qt7VU
 func _on_Sphere_input_event(camera, event, position, normal, shape_idx):

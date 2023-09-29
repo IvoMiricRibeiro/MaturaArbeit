@@ -39,6 +39,11 @@ onready var FrSet = $Friction/FSet
 
 onready var Elas = $Elasticity
 
+onready var Cor = $Restitution
+onready var CorSl = $Restitution/CorSlide
+onready var CorV = $Restitution/CorVal
+onready var CorSet = $Restitution/CorSet
+
 #onready var Warudo = $Time
 onready var Clock = $Clock
 #onready var Rabbity = $Gravity
@@ -83,7 +88,10 @@ func _physics_process(delta):
 		Fr.text = "Current coefficient of friction: "+str(Selected.Friction)
 		FrV.text = "fr: "+str(FrSl.value)
 		
-		Elas.text = "Elastic?: "+str(Selected.Elastic)
+		Cor.text = "Current coefficient of restitution: "+str(Selected.COR)
+		CorV.text = "cor: "+str(CorSl.value)
+		
+		#Elas.text = "Elastic?: "+str(Selected.Elastic)
 			
 
 func _on_VSet_pressed():
@@ -128,6 +136,14 @@ func _on_FSet_pressed():
 	
 func _on_FDef_pressed():
 	get_parent().DefaultFric = FrSl.value
+
+func _on_CorSet_pressed():
+	if Selected != null:
+		Selected.COR = CorSl.value
+
+func _on_CorDef_pressed():
+	get_parent().DefaultCOR = CorSl.value
+
 
 func _on_ESet_pressed():
 	if Selected != null:

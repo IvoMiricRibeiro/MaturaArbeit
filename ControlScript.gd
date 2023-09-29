@@ -7,6 +7,7 @@ var TimeStopped = true
 var GravityExists = false
 
 var DefaultElas = false
+var DefaultCOR = 1.0
 var DefaultRad = 1
 var DefaultFric = 0.2
 var DefaultMass = 1
@@ -24,6 +25,7 @@ func create():
 	var sphereinstance = sphere.instance()
 	sphereinstance.translation = Vector3(camera.translation.x, camera.translation.y, camera.translation.z)-(camera.global_transform.basis.z*2)
 	sphereinstance.Elastic = DefaultElas
+	sphereinstance.COR = DefaultCOR
 	sphereinstance.Radius = DefaultRad
 	sphereinstance.Mass = DefaultMass
 	sphereinstance.Friction = DefaultFric

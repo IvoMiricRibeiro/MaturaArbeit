@@ -297,7 +297,45 @@ margin_right = 289.0
 margin_bottom = 77.0
 text = "Make default"
 
+[node name="Restitution" type="RichTextLabel" parent="Control/UI"]
+margin_left = 10.0
+margin_top = 820.0
+margin_right = 320.0
+margin_bottom = 900.0
+rect_scale = Vector2( 1.5, 1.5 )
+text = "Current coefficient of restitution (elasticity):"
+
+[node name="CorSlide" type="HSlider" parent="Control/UI/Restitution"]
+margin_left = 60.0
+margin_top = 15.0
+margin_right = 305.0
+margin_bottom = 49.0
+max_value = 1.0
+step = 0.01
+value = 0.01
+
+[node name="CorVal" type="RichTextLabel" parent="Control/UI/Restitution"]
+margin_top = 23.0
+margin_right = 65.0
+margin_bottom = 40.0
+text = "cor:"
+
+[node name="CorSet" type="Button" parent="Control/UI/Restitution"]
+margin_left = 17.0
+margin_top = 47.0
+margin_right = 167.0
+margin_bottom = 77.0
+text = "Set new cor"
+
+[node name="CorDef" type="Button" parent="Control/UI/Restitution"]
+margin_left = 172.0
+margin_top = 47.0
+margin_right = 289.0
+margin_bottom = 77.0
+text = "Make default"
+
 [node name="Elasticity" type="RichTextLabel" parent="Control/UI"]
+visible = false
 margin_left = 10.0
 margin_top = 820.0
 margin_right = 310.0
@@ -335,9 +373,9 @@ text = "Click here to hide controls"
 
 [node name="Force" type="RichTextLabel" parent="Control/UI"]
 margin_left = 10.0
-margin_top = 910.0
+margin_top = 970.0
 margin_right = 240.0
-margin_bottom = 944.0
+margin_bottom = 1000.0
 rect_scale = Vector2( 1.5, 1.5 )
 text = "Force:"
 
@@ -451,6 +489,8 @@ shape = SubResource( 1 )
 [connection signal="pressed" from="Control/UI/Radius/RDef" to="Control/UI" method="_on_RDef_pressed"]
 [connection signal="pressed" from="Control/UI/Friction/FSet" to="Control/UI" method="_on_FSet_pressed"]
 [connection signal="pressed" from="Control/UI/Friction/FDef" to="Control/UI" method="_on_FDef_pressed"]
+[connection signal="pressed" from="Control/UI/Restitution/CorSet" to="Control/UI" method="_on_CorSet_pressed"]
+[connection signal="pressed" from="Control/UI/Restitution/CorDef" to="Control/UI" method="_on_CorDef_pressed"]
 [connection signal="pressed" from="Control/UI/Elasticity/ESet" to="Control/UI" method="_on_ESet_pressed"]
 [connection signal="pressed" from="Control/UI/Elasticity/EDef" to="Control/UI" method="_on_EDef_pressed"]
 [connection signal="pressed" from="Control/UI/Quit" to="Control/UI" method="_on_Quit_pressed"]
