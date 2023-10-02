@@ -23,7 +23,7 @@ func _physics_process(delta):
 
 func create():
 	var sphereinstance = sphere.instance()
-	sphereinstance.translation = Vector3(camera.translation.x, camera.translation.y, camera.translation.z)-(camera.global_transform.basis.z*2)
+	sphereinstance.translation = camera.translation-(camera.global_transform.basis.z*2)
 	sphereinstance.Elastic = DefaultElas
 	sphereinstance.COR = DefaultCOR
 	sphereinstance.Radius = DefaultRad

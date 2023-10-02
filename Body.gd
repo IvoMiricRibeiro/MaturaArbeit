@@ -49,12 +49,19 @@ func _physics_process(delta):
 	#Time stopping code
 	if Controler.TimeStopped == false:
 		#Acceleration, gravity, and forces
+		#InnerForce = Acceleration*Mass
+		#if CanAccelerate == true:
+		#	VSet(Velocity+(Acceleration/60))
+		#	if Controler.GravityExists == true:
+		#		VSet(Velocity+(Vector3(0,-9.81,0)/60))
+		#		InnerForce += Vector3(0,-9.81,0)*Mass
+		#ResForce = InnerForce-FricForce
+		
 		InnerForce = Acceleration*Mass
-		if CanAccelerate == true:
-			VSet(Velocity+(Acceleration/60))
-			if Controler.GravityExists == true:
-				VSet(Velocity+(Vector3(0,-9.81,0)/60))
-				InnerForce += Vector3(0,-9.81,0)*Mass
+		VSet(Velocity+(Acceleration/60))
+		if Controler.GravityExists == true:
+			VSet(Velocity+(Vector3(0,-9.81,0)/60))
+			InnerForce += Vector3(0,-9.81,0)*Mass
 		ResForce = InnerForce-FricForce
 		
 		move_and_slide(Velocity)
@@ -101,12 +108,14 @@ func _physics_process(delta):
 						Velocity[axis] = Vn
 						if Vn == 0:
 							AgainstSurface[axis] = true
-							NormalForce[axis] = Acceleration[axis]
-							if axis == 1 and Controler.GravityExists == true:
-								NormalForce += Vector3(0,9.81,0)
+							NormalForce = -InnerForce
+							#NormalForce[axis] = Acceleration[axis]
+							#if axis == 1 and Controler.GravityExists == true:
+							#	NormalForce += Vector3(0,9.81,0)
 					axis += 1
-				NormalForce = NormalForce*Mass
+				#NormalForce = -InnerForce
 				FricForce = (Velocity.normalized()*NormalForce.length()*Friction)
+				ResForce = ResForce + NormalForce - FricForce
 				
 				var Vf = (FricForce/(Mass*60))
 				if Velocity.length()-Vf.length() < 0:
