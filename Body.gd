@@ -3,7 +3,7 @@ extends KinematicBody
 var Velocity = Vector3() setget VSet
 var Acceleration = Vector3() setget ASet
 
-var Mass = 1.0 setget MSet
+var Mass = 1 setget MSet
 var Elastic = false
 var Friction = 0.2
 var Radius = 1
@@ -21,7 +21,7 @@ var HasCollided = false setget HasColSet
 onready var Controler = get_parent()
 onready var CMesh = $CSGMesh
 
-var COR = 1.0
+var COR = 1
 
 #Setters functions for other bodies
 func VSet(param):
@@ -59,6 +59,7 @@ func _physics_process(delta):
 		
 		move_and_slide(Velocity)
 		
+		#CanAccelerate = true
 		AgainstSurface = [false, false, false]
 		ElasColHappened = [false, false, false]
 		#Collisions
@@ -77,25 +78,25 @@ func _physics_process(delta):
 					var PD1 = translation-body.translation
 					var CorN = (COR+body.COR)/2
 					
-					var dV1n = (((1+CorN)*M2)/(M1+M2))*(PD1.normalized()*(V2-V1))*PD1.normalized()
-					VSet(V1+dV1n)
-					body.VSet(V2-dV1n)
-				
+					var dV = (((1+CorN)*M2)/(M1+M2))*((Vector3(V1-V2).dot((PD1)))/PD1.length_squared())*PD1
+					VSet(V1-dV)
+					body.VSet(V2+dV)
+					
 				if body.HasCollided == true:
 					body.HasColSet(false)
 				HasColSet(false)
 				
 			if body is StaticBody:
-				var Vn = Velocity[0]
 				var axis = 0
 				var dis = self.translation-body.translation
-				CanAccelerate = false
+				#CanAccelerate = false
 				while axis < 3:
 					if body.get_collision_layer_bit(axis) == true:
+						var Vn = Velocity[axis]
 						if ElasColHappened[axis] == false:
 							ElasColHappened[axis] = true
 							Vn = -Velocity[axis]*COR
-						if sqrt(Vn*Vn) < 0.2:
+						if sqrt(Vn*Vn) < 0.5:
 							Vn = 0
 						Velocity[axis] = Vn
 						if Vn == 0:
@@ -112,7 +113,6 @@ func _physics_process(delta):
 					VSet(Vector3())
 				else:
 					VSet(Velocity-(FricForce/(Mass*60)))
-
 				
 		for axis in AgainstSurface.size():
 			if AgainstSurface[axis] == true:
@@ -120,7 +120,6 @@ func _physics_process(delta):
 		
 		NormalForce = Vector3()
 		FricForce = Vector3()
-		CanAccelerate = true
 		
 #From https://www.youtube.com/watch?v=U5qGj8qt7VU
 func _on_Sphere_input_event(camera, event, position, normal, shape_idx):
