@@ -44,9 +44,7 @@ onready var CorSl = $Restitution/CorSlide
 onready var CorV = $Restitution/CorVal
 onready var CorSet = $Restitution/CorSet
 
-#onready var Warudo = $Time
 onready var Clock = $Clock
-#onready var Rabbity = $Gravity
 onready var Arrow = $Arrow
 
 onready var Instr = $Instructions
@@ -54,12 +52,9 @@ onready var InstrPn = $InstructionPanel
 
 func _physics_process(delta):
 	Selected = get_parent().SelectedBody
-		
-	#Warudo.text = "Time stopped?: "+str(get_parent().TimeStopped)
-	#Rabbity.text = "Gravity: "+str(get_parent().GravityExists)
+	
 	Clock.visible = !get_parent().TimeStopped
 	Arrow.visible = get_parent().GravityExists
-	
 	
 	if InstrPn.visible == true:
 			Instr.text = "Click here to hide controls"
@@ -91,8 +86,6 @@ func _physics_process(delta):
 		Cor.text = "Current coefficient of restitution: "+str(Selected.COR)
 		CorV.text = "cor: "+str(CorSl.value)
 		
-		#Elas.text = "Elastic?: "+str(Selected.Elastic)
-			
 
 func _on_VSet_pressed():
 	if Selected != null:
@@ -143,15 +136,6 @@ func _on_CorSet_pressed():
 
 func _on_CorDef_pressed():
 	get_parent().DefaultCOR = CorSl.value
-
-
-func _on_ESet_pressed():
-	if Selected != null:
-		Selected.Elastic = !Selected.Elastic
-
-func _on_EDef_pressed():
-	if Selected != null:
-		get_parent().DefaultElas = Selected.Elastic
 
 func _on_Quit_pressed():
 	get_tree().quit()

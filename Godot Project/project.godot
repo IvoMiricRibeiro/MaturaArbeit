@@ -151,6 +151,10 @@ letter_e={
  ]
 }
 
+[mono]
+
+project/assembly_name="Matura Simulation"
+
 [physics]
 
 common/enable_pause_aware_picking=true

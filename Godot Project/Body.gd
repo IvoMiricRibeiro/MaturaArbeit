@@ -4,7 +4,7 @@ var Velocity = Vector3() setget VSet
 var Acceleration = Vector3() setget ASet
 
 var Mass = 1 setget MSet
-var Elastic = false
+var COR = 1
 var Friction = 0.2
 var Radius = 1
 
@@ -13,7 +13,6 @@ var NormalForce = Vector3()
 var FricForce = Vector3()
 var ResForce = Vector3() #Sum of all forces
 
-var AgainstSurface = [false, false, false] setget ASurfSet
 var ElasColHappened = [false, false, false]
 var CanAccelerate = true
 var HasCollided = false setget HasColSet
@@ -21,7 +20,6 @@ var HasCollided = false setget HasColSet
 onready var Controler = get_parent()
 onready var CMesh = $CSGMesh
 
-var COR = 1
 
 #Setters functions for other bodies
 func VSet(param):
@@ -30,8 +28,6 @@ func ASet(param):
 	Acceleration = param
 func MSet(param):
 	Mass = param
-func ASurfSet(param):
-	AgainstSurface = param
 func HasColSet(param):
 	HasCollided = param
 
@@ -48,15 +44,7 @@ func _process(delta):
 func _physics_process(delta):
 	#Time stopping code
 	if Controler.TimeStopped == false:
-		#Acceleration, gravity, and forces
-		#InnerForce = Acceleration*Mass
-		#if CanAccelerate == true:
-		#	VSet(Velocity+(Acceleration/60))
-		#	if Controler.GravityExists == true:
-		#		VSet(Velocity+(Vector3(0,-9.81,0)/60))
-		#		InnerForce += Vector3(0,-9.81,0)*Mass
-		#ResForce = InnerForce-FricForce
-		
+		#Acceleration and Forces
 		InnerForce = Acceleration*Mass
 		VSet(Velocity+(Acceleration/60))
 		if Controler.GravityExists == true:
@@ -66,8 +54,6 @@ func _physics_process(delta):
 		
 		move_and_slide(Velocity)
 		
-		#CanAccelerate = true
-		AgainstSurface = [false, false, false]
 		ElasColHappened = [false, false, false]
 		#Collisions
 		for index in get_slide_count():
@@ -96,7 +82,6 @@ func _physics_process(delta):
 			if body is StaticBody:
 				var axis = 0
 				var dis = self.translation-body.translation
-				#CanAccelerate = false
 				while axis < 3:
 					if body.get_collision_layer_bit(axis) == true:
 						var Vn = Velocity[axis]
@@ -107,13 +92,8 @@ func _physics_process(delta):
 							Vn = 0
 						Velocity[axis] = Vn
 						if Vn == 0:
-							AgainstSurface[axis] = true
 							NormalForce = -InnerForce
-							#NormalForce[axis] = Acceleration[axis]
-							#if axis == 1 and Controler.GravityExists == true:
-							#	NormalForce += Vector3(0,9.81,0)
 					axis += 1
-				#NormalForce = -InnerForce
 				FricForce = (Velocity.normalized()*NormalForce.length()*Friction)
 				ResForce = ResForce + NormalForce - FricForce
 				
@@ -123,10 +103,6 @@ func _physics_process(delta):
 				else:
 					VSet(Velocity-(FricForce/(Mass*60)))
 				
-		for axis in AgainstSurface.size():
-			if AgainstSurface[axis] == true:
-				Velocity[axis] = 0
-		
 		NormalForce = Vector3()
 		FricForce = Vector3()
 		

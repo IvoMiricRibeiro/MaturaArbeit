@@ -6,8 +6,7 @@ var SelectedBody
 var TimeStopped = true
 var GravityExists = false
 
-var DefaultElas = false
-var DefaultCOR = 1.0
+var DefaultCOR = 1
 var DefaultRad = 1
 var DefaultFric = 0.2
 var DefaultMass = 1
@@ -20,11 +19,9 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("letter_g"):
 		GravityExists = !GravityExists
 		
-
 func create():
 	var sphereinstance = sphere.instance()
 	sphereinstance.translation = camera.translation-(camera.global_transform.basis.z*2)
-	sphereinstance.Elastic = DefaultElas
 	sphereinstance.COR = DefaultCOR
 	sphereinstance.Radius = DefaultRad
 	sphereinstance.Mass = DefaultMass
