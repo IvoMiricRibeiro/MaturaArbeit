@@ -3,10 +3,10 @@ extends KinematicBody
 var Velocity = Vector3() setget VSet
 var Acceleration = Vector3() setget ASet
 
-var Mass = 1 setget MSet
-var COR = 1
+export var Mass = 1.0 setget MSet
+export var COR = 1.0
 var Friction = 0.2
-var Radius = 1
+export var Radius = 1.0
 
 var InnerForce = Vector3() #Force calculated with the acceleration var
 var NormalForce = Vector3()
@@ -69,11 +69,13 @@ func _physics_process(delta):
 					var M1 = Mass
 					var M2 = body.Mass
 					var PD1 = translation-body.translation
+					var PD2 = -PD1
 					var CorN = (COR+body.COR)/2
 					
-					var dV = (((1+CorN)*M2)/(M1+M2))*((Vector3(V1-V2).dot((PD1)))/PD1.length_squared())*PD1
-					VSet(V1-dV)
-					body.VSet(V2+dV)
+					var dV1 = (((1+CorN)*M2)/(M1+M2))*((Vector3(V1-V2).dot((PD1)))/PD1.length_squared())*PD1
+					var dV2 = (((1+CorN)*M1)/(M1+M2))*((Vector3(V2-V1).dot((PD2)))/PD2.length_squared())*PD2
+					VSet(V1-dV1)
+					body.VSet(V2-dV2)
 					
 				if body.HasCollided == true:
 					body.HasColSet(false)
